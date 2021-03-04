@@ -1,0 +1,36 @@
+version: '3.1'
+
+#  https://github.com/ros2/demos/issues/432
+
+services:
+ publisher:
+    image: osrf/ros2:devel
+    devices:
+      - /dev/video0:/dev/video0
+    command:
+      - ros2 run image_tools cam2image
+    networks:
+      - ros2
+ 
+ subscriber:
+    image: osrf/ros2:devel
+    devices:
+      - /dev/video0:/dev/video0
+    command:
+      - ros2 run image_tools showimage
+    networks:
+      - ros2
+
+
+ echoSubscriber:
+    image: osrf/ros2:devel
+    command:
+      - ros2 topic echo /image
+    networks:
+      - ros2
+
+
+
+networks:
+ ros2:
+   driver: bridge
